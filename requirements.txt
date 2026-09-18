@@ -1,0 +1,10 @@
+# Core runtime dependencies / dependências de execução
+# The analyzer works with the standard library alone.
+# O analisador funciona apenas com a biblioteca padrão.
+
+# Camera + face detection (face-only presence) / câmera + detecção de rosto
+opencv-python>=4.8 ; platform_system != "Linux" or platform_machine == "x86_64"
+numpy>=1.23
+
+# Keyboard/mouse metadata capture / captura de metadados de teclado e mouse
+pynput>=1.7

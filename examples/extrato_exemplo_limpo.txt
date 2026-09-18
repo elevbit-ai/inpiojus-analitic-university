@@ -1,0 +1,45 @@
+==================================================================
+ INPIOJUS ANALITIC UNIVERSITY
+ EXTRATO DE FISCALIZAÇÃO DE PROVA / EXAM PROCTORING EXTRACT
+ InpioJus Analitic University v1.0.0 — por Joaquim Pedro de Morais Filho
+==================================================================
+
+[SESSAO / SESSION]
+session_id: 20260918_170628
+aluno / student: ALUNO DE EXEMPLO / SAMPLE STUDENT
+matricula / id: 2026-000123
+url_prova / exam_url: https://ava.universidade.edu.br/prova/8842
+inicio / start: 2026-09-18 17:06:28
+fim / end: 2026-09-18 17:06:28
+duracao_prevista_min / planned_minutes: 60
+janela_prova / exam_window: chrome.exe :: Prova de Direito Constitucional - AVA
+
+[MAQUINA / MACHINE]
+sistema / system: Windows 10
+maquina / host: PC-ALUNO
+python: 3.11
+
+[CONSENTIMENTO / CONSENT]
+consentido / consented: SIM / YES
+registrado_em / recorded_at: 2026-09-18 17:06:28
+termos_versao / terms_version: 1.0
+
+[METRICAS / METRICS]
+keystrokes: 2100
+paste_events: 0
+mouse_distance_px: 51200
+mouse_moves: 3400
+camera_active: true
+camera_checks: 420
+camera_face_ok: 415
+total_eventos / total_events: 2
+
+[EVENTOS / EVENTS]
+# t_seg | relogio | severidade | tipo | detalhe | dados_json
+120.0 | 20:02:00 | info | focus_regained | focus returned to exam window | {}
+900.0 | 20:15:00 | medium | mouse_idle | mouse still for 95s | {"idle_seconds":95}
+
+[INTEGRIDADE / INTEGRITY]
+# O hash cobre todo o conteudo acima. Qualquer alteracao o invalida.
+# The hash covers everything above. Any change invalidates it.
+hash_sha256: c9180d2fa1a3a97dd06972608ac6b4b8abf4a71218a1d5b523fcb08a58fecd71

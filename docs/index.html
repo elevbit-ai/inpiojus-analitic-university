@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InpioJus Analitic University — Proctoring inteligente de provas online</title>
+<meta name="description" content="InpioJus Analitic University: agente de fiscalização de provas online com consentimento + analisador inteligente de integridade. Câmera só do rosto, metadados de teclado/mouse, detecção de uso de IA. Por Joaquim Pedro de Morais Filho.">
+<meta name="author" content="Joaquim Pedro de Morais Filho">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+<style>
+  :root{
+    --bg:#0a0f1e; --bg2:#0e1730; --card:#111c38; --border:#233258;
+    --txt:#e9eefb; --txt2:#96a4c8; --teal:#2dd4bf; --teal2:#5eead4;
+    --blue:#5b8cff; --green:#5ce39b; --red:#ff6b6b; --amber:#f4c04e;
+    --term:#080d1c; --mono:"Cascadia Code","Consolas","SF Mono",monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--txt);font-family:"Segoe UI",system-ui,sans-serif;line-height:1.65}
+  a{color:var(--teal);text-decoration:none}a:hover{color:var(--teal2)}
+  .container{max-width:1080px;margin:0 auto;padding:0 24px}
+  .pt,.en{display:none}
+  body.lang-pt .pt{display:revert}
+  body.lang-en .en{display:revert}
+  body.lang-pt span.pt,body.lang-en span.en{display:inline}
+
+  nav{position:sticky;top:0;z-index:50;background:rgba(10,15,30,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  nav .container{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .logo{font-weight:700;font-size:1.02rem;display:flex;gap:8px;align-items:center}
+  .logo .teal{color:var(--teal)}
+  nav ul{display:flex;gap:20px;list-style:none;font-size:.9rem;align-items:center}
+  nav ul a{color:var(--txt2)}nav ul a:hover{color:var(--teal)}
+  .lang-btn{background:var(--card);border:1px solid var(--border);color:var(--txt);border-radius:999px;padding:5px 14px;cursor:pointer;font-size:.82rem;font-family:inherit}
+  .lang-btn:hover{border-color:var(--teal)}
+  @media(max-width:820px){nav ul li.hide{display:none}}
+
+  header{padding:80px 0 56px;background:radial-gradient(900px 420px at 72% -10%,rgba(45,212,191,.16),transparent),radial-gradient(700px 380px at 12% 8%,rgba(91,140,255,.13),transparent);text-align:center}
+  .selo{display:inline-block;padding:5px 16px;border:1px solid var(--border);border-radius:999px;font-size:.78rem;color:var(--txt2);background:rgba(17,28,56,.6);margin-bottom:22px}
+  h1{font-size:clamp(2rem,5.2vw,3.3rem);line-height:1.14;font-weight:800}
+  h1 .grad{background:linear-gradient(92deg,var(--teal) 5%,var(--teal2) 45%,var(--blue) 95%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--txt2);font-size:clamp(1rem,2.2vw,1.18rem);max-width:700px;margin:16px auto 6px}
+  .autor-hero{color:var(--teal);font-size:.95rem;margin-bottom:30px}
+  .instalar{display:inline-flex;align-items:center;gap:12px;background:var(--term);border:1px solid var(--border);border-radius:12px;padding:14px 18px;font-family:var(--mono);font-size:.86rem;color:var(--green);max-width:100%;overflow-x:auto;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+  .instalar .ps{color:var(--blue);user-select:none}
+  .btn-copiar{background:var(--border);color:var(--txt);border:none;cursor:pointer;border-radius:8px;padding:6px 12px;font-size:.76rem;flex-shrink:0;font-family:inherit}
+  .btn-copiar:hover{background:var(--blue)}
+  .hero-acoes{margin-top:24px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-block;padding:12px 26px;border-radius:10px;font-weight:600;font-size:.94rem;transition:transform .15s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-teal{background:linear-gradient(92deg,var(--teal),#14b8a6);color:#04231f}
+  .btn-vazado{border:1px solid var(--border);color:var(--txt);background:var(--card)}
+
+  section{padding:66px 0}section.alt{background:var(--bg2)}
+  .tsec{text-align:center;margin-bottom:12px;font-size:clamp(1.5rem,3.3vw,2.05rem);font-weight:750}
+  .tsec .teal{color:var(--teal)}
+  .dsec{text-align:center;color:var(--txt2);max-width:660px;margin:0 auto 44px}
+  .grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:26px}
+  .card .ic{font-size:1.7rem;margin-bottom:12px;display:block}
+  .card h3{font-size:1.05rem;margin-bottom:8px}.card p{color:var(--txt2);font-size:.92rem}
+
+  .dois{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:780px){.dois{grid-template-columns:1fr}}
+  .agente{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:30px;position:relative}
+  .agente .tag{position:absolute;top:-13px;left:24px;background:var(--teal);color:#04231f;font-weight:700;font-size:.72rem;padding:3px 12px;border-radius:999px}
+  .agente h3{margin:6px 0 10px;font-size:1.2rem}
+  .agente ul{list-style:none;color:var(--txt2);font-size:.92rem}
+  .agente ul li{padding:5px 0 5px 22px;position:relative}
+  .agente ul li::before{content:"▸";position:absolute;left:0;color:var(--teal)}
+
+  .priv{border:1px solid rgba(45,212,191,.4);background:rgba(45,212,191,.06);border-radius:16px;padding:30px}
+  .priv h3{color:var(--teal2);margin-bottom:14px}
+  .priv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .priv-item{font-size:.9rem;color:var(--txt)}
+  .priv-item b{color:var(--teal2)}
+
+  .video-wrap{max-width:880px;margin:0 auto 50px}
+  .vtit{font-size:1.12rem;font-weight:700;margin-bottom:3px}.vtit .num{color:var(--teal)}
+  .vdesc{color:var(--txt2);font-size:.89rem;margin-bottom:15px}
+  .player{background:var(--term);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 16px 46px rgba(0,0,0,.5)}
+  .ptop{display:flex;align-items:center;gap:8px;padding:11px 16px;background:#0c1430;border-bottom:1px solid var(--border)}
+  .bo{width:11px;height:11px;border-radius:50%}.b1{background:#ff5f57}.b2{background:#febc2e}.b3{background:#28c840}
+  .ptop .rot{margin-left:10px;color:var(--txt2);font-size:.77rem;font-family:var(--mono)}
+  .tela{padding:18px 20px;font-family:var(--mono);font-size:.8rem;min-height:290px;max-height:340px;overflow-y:auto;white-space:pre-wrap;line-height:1.5}
+  .cursor{display:inline-block;width:8px;height:14px;background:var(--green);vertical-align:text-bottom;animation:pisca 1s steps(1) infinite}
+  @keyframes pisca{50%{opacity:0}}
+  .leg{padding:12px 18px;background:#0c1430;border-top:1px solid var(--border);color:var(--teal2);font-size:.87rem;min-height:44px;font-style:italic}
+  .ctrl{display:flex;align-items:center;gap:14px;padding:12px 16px;background:#0a1024;border-top:1px solid var(--border)}
+  .bplay{background:var(--teal);color:#04231f;border:none;border-radius:8px;width:92px;padding:8px 0;font-weight:700;cursor:pointer;font-size:.84rem;font-family:inherit}
+  .brei{background:transparent;color:var(--txt2);border:1px solid var(--border);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:.82rem;font-family:inherit}
+  .prog{flex:1;height:6px;background:var(--border);border-radius:999px;overflow:hidden}
+  .prog .bar{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--blue));transition:width .3s}
+
+  .abas{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;justify-content:center}
+  .aba{background:var(--card);border:1px solid var(--border);color:var(--txt2);border-radius:999px;padding:8px 20px;cursor:pointer;font-size:.87rem;font-family:inherit}
+  .aba.on{background:var(--teal);color:#04231f;font-weight:700;border-color:var(--teal)}
+  .exemplo{background:var(--term);border:1px solid var(--border);border-radius:14px;padding:22px;font-family:var(--mono);font-size:.78rem;overflow-x:auto;white-space:pre;color:#c7d0ea;line-height:1.5}
+  .exemplo .teal{color:var(--teal)}.exemplo .green{color:var(--green)}.exemplo .red{color:var(--red)}.exemplo .amber{color:var(--amber)}
+
+  table.cmd{width:100%;border-collapse:collapse;font-size:.9rem}
+  table.cmd td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+  table.cmd td:first-child{font-family:var(--mono);color:var(--green);white-space:nowrap}
+  table.cmd td:last-child{color:var(--txt2)}
+
+  .autor-card{max-width:620px;margin:0 auto;text-align:center;background:var(--card);border:1px solid var(--teal);border-radius:18px;padding:40px 32px}
+  .autor-card .av{width:84px;height:84px;border-radius:50%;margin:0 auto 18px;background:linear-gradient(135deg,var(--teal),var(--blue));display:flex;align-items:center;justify-content:center;font-size:2.1rem}
+  .autor-card h3{font-size:1.3rem;margin-bottom:4px}
+  .autor-card .fn{color:var(--teal);font-size:.9rem;margin-bottom:16px}
+  .autor-card .ct{color:var(--txt2);font-size:.92rem;line-height:2}
+  .aviso{max-width:740px;margin:36px auto 0;padding:16px 22px;border-radius:12px;border:1px solid rgba(244,192,78,.35);background:rgba(244,192,78,.07);color:var(--amber);font-size:.85rem;text-align:center}
+  footer{border-top:1px solid var(--border);padding:32px 0;text-align:center;color:var(--txt2);font-size:.85rem}
+</style>
+</head>
+<body class="lang-pt">
+
+<nav>
+  <div class="container">
+    <div class="logo">🎓 <span>InpioJus <span class="teal">University</span></span></div>
+    <ul>
+      <li class="hide"><a href="#agentes"><span class="pt">Agentes</span><span class="en">Agents</span></a></li>
+      <li class="hide"><a href="#privacidade"><span class="pt">Privacidade</span><span class="en">Privacy</span></a></li>
+      <li class="hide"><a href="#videos"><span class="pt">Vídeos</span><span class="en">Videos</span></a></li>
+      <li class="hide"><a href="#exemplos"><span class="pt">Exemplos</span><span class="en">Examples</span></a></li>
+      <li class="hide"><a href="#instalar"><span class="pt">Instalar</span><span class="en">Install</span></a></li>
+      <li><a href="https://github.com/elevbit-ai/inpiojus-analitic-university" target="_blank" rel="noopener">GitHub</a></li>
+      <li><button class="lang-btn" onclick="toggleLang()"><span class="pt">EN 🇬🇧</span><span class="en">PT 🇧🇷</span></button></li>
+    </ul>
+  </div>
+</nav>
+
+<header>
+  <div class="container">
+    <span class="selo"><span class="pt">🎓 Integridade em provas online · Consentido · 100% local</span><span class="en">🎓 Online-exam integrity · Consent-based · 100% local</span></span>
+    <h1><span class="pt">Provas online <span class="grad">com integridade</span></span><span class="en">Online exams <span class="grad">with integrity</span></span></h1>
+    <p class="sub">
+      <span class="pt"><strong>InpioJus Analitic University</strong> é o agente que fiscaliza a prova online do aluno — com <strong>consentimento</strong> e câmera <strong>só do rosto</strong> — e o analisador que lê o extrato e detecta, de forma inteligente, se houve <strong>cola ou uso de IA</strong>.</span>
+      <span class="en"><strong>InpioJus Analitic University</strong> is the agent that proctors the student's online exam — <strong>with consent</strong> and a <strong>face-only</strong> camera — and the analyzer that reads the extract and intelligently detects <strong>cheating or AI use</strong>.</span>
+    </p>
+    <p class="autor-hero"><span class="pt">por</span><span class="en">by</span> Joaquim Pedro de Morais Filho</p>
+    <div class="instalar">
+      <span class="ps">PS&gt;</span>
+      <span>irm https://elevbit-ai.github.io/inpiojus-analitic-university/install.ps1 | iex</span>
+      <button class="btn-copiar" onclick="copiar()"><span class="pt">Copiar</span><span class="en">Copy</span></button>
+    </div>
+    <div class="hero-acoes">
+      <a class="btn btn-teal" href="#videos">▶ <span class="pt">Ver demonstrações</span><span class="en">Watch demos</span></a>
+      <a class="btn btn-vazado" href="https://github.com/elevbit-ai/inpiojus-analitic-university" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</header>
+
+<section id="importancia">
+  <div class="container">
+    <h2 class="tsec"><span class="pt">Por que <span class="teal">isso importa</span></span><span class="en">Why <span class="teal">it matters</span></span></h2>
+    <p class="dsec"><span class="pt">Diplomas valem pela confiança de que a avaliação foi justa. A cola e a IA usadas de forma indevida corroem essa confiança e prejudicam quem estuda de verdade.</span><span class="en">Degrees are worth the trust that assessment was fair. Cheating and misused AI erode that trust and hurt students who genuinely study.</span></p>
+    <div class="grade">
+      <div class="card"><span class="ic">⚖️</span><h3><span class="pt">Mérito protegido</span><span class="en">Merit protected</span></h3><p><span class="pt">Quem se esforça não é prejudicado por quem cola. A avaliação volta a medir o que deveria.</span><span class="en">Honest students are not undercut by cheaters. Assessment measures what it should again.</span></p></div>
+      <div class="card"><span class="ic">🏛️</span><h3><span class="pt">Reputação institucional</span><span class="en">Institutional reputation</span></h3><p><span class="pt">Provas íntegras sustentam a credibilidade dos cursos e dos diplomas emitidos.</span><span class="en">Sound exams uphold the credibility of courses and the degrees awarded.</span></p></div>
+      <div class="card"><span class="ic">🤖</span><h3><span class="pt">Feito para a era da IA</span><span class="en">Built for the AI era</span></h3><p><span class="pt">Detecta o padrão de "consultar a IA e colar a resposta", o desafio central das provas remotas hoje.</span><span class="en">Detects the "ask AI, paste the answer" pattern — the core challenge of remote exams today.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="agentes" class="alt">
+  <div class="container">
+    <h2 class="tsec"><span class="pt">Dois <span class="teal">agentes</span>, um objetivo</span><span class="en">Two <span class="teal">agents</span>, one goal</span></h2>
+    <p class="dsec"><span class="pt">Um fiscaliza a prova no computador do aluno; o outro analisa o extrato na instituição.</span><span class="en">One proctors the exam on the student's computer; the other analyzes the extract at the institution.</span></p>
+    <div class="dois">
+      <div class="agente">
+        <span class="tag"><span class="pt">NO ALUNO</span><span class="en">ON THE STUDENT</span></span>
+        <h3>🛡️ <span class="pt">Agente de Fiscalização</span><span class="en">Proctoring Agent</span></h3>
+        <p style="color:var(--txt2);font-size:.9rem;margin-bottom:10px"><span class="pt">O aluno informa a <b>URL da prova</b>, aceita o termo e a fiscalização roda <b>só durante o tempo do exame</b>:</span><span class="en">The student enters the <b>exam URL</b>, accepts the terms, and monitoring runs <b>only during the exam</b>:</span></p>
+        <ul>
+          <li><span class="pt"><b>Câmera</b> — confirma presença e detecta terceiros, <b>só o rosto</b></span><span class="en"><b>Camera</b> — confirms presence and detects other people, <b>face only</b></span></li>
+          <li><span class="pt"><b>Teclado</b> — ritmo, colagens (Ctrl+V) e atalhos (sem senhas/texto)</span><span class="en"><b>Keyboard</b> — rhythm, pastes (Ctrl+V) and shortcuts (no passwords/text)</span></li>
+          <li><span class="pt"><b>Mouse</b> — movimentação e inatividade</span><span class="en"><b>Mouse</b> — movement and idle time</span></li>
+          <li><span class="pt"><b>Janela</b> — verifica que só a aba da prova está aberta em foco</span><span class="en"><b>Window</b> — checks only the exam tab is focused</span></li>
+        </ul>
+        <p style="color:var(--teal2);font-size:.88rem;margin-top:12px"><span class="pt">➜ Gera um <b>extrato .txt assinado</b> (com hash) que o aluno envia à faculdade.</span><span class="en">➜ Produces a <b>signed .txt extract</b> (hash) the student sends to the university.</span></p>
+      </div>
+      <div class="agente">
+        <span class="tag"><span class="pt">NA INSTITUIÇÃO</span><span class="en">AT THE INSTITUTION</span></span>
+        <h3>🔎 <span class="pt">Agente University (Analisador)</span><span class="en">University Agent (Analyzer)</span></h3>
+        <p style="color:var(--txt2);font-size:.9rem;margin-bottom:10px"><span class="pt">Lê o extrato e estima o <b>risco de fraude</b> de forma inteligente:</span><span class="en">Reads the extract and intelligently estimates the <b>fraud risk</b>:</span></p>
+        <ul>
+          <li><span class="pt">Pondera colagens, rajadas, trocas de aba, rostos extras e ausências</span><span class="en">Weighs pastes, bursts, tab switches, extra faces and absences</span></li>
+          <li><span class="pt"><b>Correlaciona padrões</b>: "saiu da prova → colou resposta" (típico de IA)</span><span class="en"><b>Correlates patterns</b>: "left the exam → pasted answer" (typical of AI)</span></li>
+          <li><span class="pt">Verifica o <b>hash</b>: detecta extrato adulterado</span><span class="en">Checks the <b>hash</b>: detects a tampered extract</span></li>
+          <li><span class="pt">Emite <b>BAIXO / MÉDIO / ALTO</b> com as evidências</span><span class="en">Outputs <b>LOW / MEDIUM / HIGH</b> with the evidence</span></li>
+        </ul>
+        <p style="color:var(--teal2);font-size:.88rem;margin-top:12px"><span class="pt">➜ Um <b>indicador de risco</b> para apoiar a revisão humana — nunca um veredito automático.</span><span class="en">➜ A <b>risk indicator</b> to support human review — never an automatic verdict.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="privacidade">
+  <div class="container">
+    <h2 class="tsec"><span class="pt">Privacidade <span class="teal">por projeto</span></span><span class="en">Privacy <span class="teal">by design</span></span></h2>
+    <p class="dsec"><span class="pt">Vigiar uma prova envolve dados sensíveis. Por isso a ferramenta foi desenhada para respeitar a LGPD e o GDPR desde o início.</span><span class="en">Proctoring involves sensitive data. The tool is designed to respect LGPD and GDPR from the ground up.</span></p>
+    <div class="priv">
+      <h3>🔒 <span class="pt">Compromissos</span><span class="en">Commitments</span></h3>
+      <div class="priv-grid">
+        <div class="priv-item"><b><span class="pt">Consentimento primeiro.</span><span class="en">Consent first.</span></b> <span class="pt">Nada inicia sem o aluno aceitar o termo.</span><span class="en">Nothing starts until the student accepts the terms.</span></div>
+        <div class="priv-item"><b><span class="pt">Câmera só do rosto.</span><span class="en">Face-only camera.</span></b> <span class="pt">Recortes no rosto, nunca o ambiente.</span><span class="en">Cropped to the face, never the room.</span></div>
+        <div class="priv-item"><b><span class="pt">Sem senhas, sem texto.</span><span class="en">No passwords, no text.</span></b> <span class="pt">Só metadados do teclado.</span><span class="en">Keyboard metadata only.</span></div>
+        <div class="priv-item"><b><span class="pt">Tempo limitado.</span><span class="en">Time-bounded.</span></b> <span class="pt">Coleta só durante a prova.</span><span class="en">Collection only during the exam.</span></div>
+        <div class="priv-item"><b><span class="pt">Dados locais.</span><span class="en">Local data.</span></b> <span class="pt">Nada é enviado a servidores.</span><span class="en">Nothing is uploaded to servers.</span></div>
+        <div class="priv-item"><b><span class="pt">Sem decisão automática.</span><span class="en">No automated decision.</span></b> <span class="pt">Revisão humana e contraditório.</span><span class="en">Human review and right to respond.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="videos" class="alt">
+  <div class="container">
+    <h2 class="tsec"><span class="pt">Vídeos <span class="teal">explicativos</span></span><span class="en">Explainer <span class="teal">videos</span></span></h2>
+    <p class="dsec"><span class="pt">Demonstrações narradas do terminal. 🎬 Vídeo completo em MP4: </span><span class="en">Narrated terminal demos. 🎬 Full MP4 video: </span><a id="mp4link" href="https://github.com/elevbit-ai/inpiojus-analitic-university/releases/tag/v1.0.0"><strong><span class="pt">baixar apresentação</span><span class="en">download presentation</span></strong></a>.</p>
+
+    <div class="video-wrap">
+      <div class="vtit"><span class="num"><span class="pt">Vídeo 1 ·</span><span class="en">Video 1 ·</span></span> <span class="pt">Como o aluno aciona o agente</span><span class="en">How the student starts the agent</span></div>
+      <div class="vdesc"><span class="pt">Consentimento, URL da prova e início da fiscalização no PowerShell.</span><span class="en">Consent, exam URL, and starting proctoring in PowerShell.</span></div>
+      <div class="player" data-video="v1"><div class="ptop"><span class="bo b1"></span><span class="bo b2"></span><span class="bo b3"></span><span class="rot">PowerShell — proctor</span></div><div class="tela"></div><div class="leg"></div><div class="ctrl"><button class="bplay">▶ Play</button><button class="brei">⟲</button><div class="prog"><div class="bar"></div></div></div></div>
+    </div>
+
+    <div class="video-wrap">
+      <div class="vtit"><span class="num"><span class="pt">Vídeo 2 ·</span><span class="en">Video 2 ·</span></span> <span class="pt">A instituição analisa o extrato</span><span class="en">The institution analyzes the extract</span></div>
+      <div class="vdesc"><span class="pt">O agente University lê o extrato e detecta o uso de IA.</span><span class="en">The University agent reads the extract and detects AI use.</span></div>
+      <div class="player" data-video="v2"><div class="ptop"><span class="bo b1"></span><span class="bo b2"></span><span class="bo b3"></span><span class="rot">PowerShell — analyzer</span></div><div class="tela"></div><div class="leg"></div><div class="ctrl"><button class="bplay">▶ Play</button><button class="brei">⟲</button><div class="prog"><div class="bar"></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="exemplos">
+  <div class="container">
+    <h2 class="tsec"><span class="pt">Exemplos <span class="teal">reais</span></span><span class="en">Real <span class="teal">examples</span></span></h2>
+    <p class="dsec"><span class="pt">Saídas verdadeiras do analisador sobre extratos de exemplo do repositório.</span><span class="en">Real analyzer output over the repository's sample extracts.</span></p>
+    <div class="abas">
+      <button class="aba on" onclick="showEx('alto',this)">🚨 <span class="pt">Risco alto</span><span class="en">High risk</span></button>
+      <button class="aba" onclick="showEx('baixo',this)">✅ <span class="pt">Risco baixo</span><span class="en">Low risk</span></button>
+      <button class="aba" onclick="showEx('extrato',this)">📄 <span class="pt">Extrato</span><span class="en">Extract</span></button>
+    </div>
+    <div class="exemplo" id="exbox"></div>
+  </div>
+</section>
+
+<section id="comandos" class="alt">
+  <div class="container">
+    <h2 class="tsec"><span class="pt">Comandos</span><span class="en">Commands</span></h2>
+    <p class="dsec"><span class="pt">Funciona no PowerShell e no CMD. Idioma com <code>--lang pt</code> ou <code>--lang en</code>.</span><span class="en">Works in PowerShell and CMD. Language via <code>--lang pt</code> or <code>--lang en</code>.</span></p>
+    <div class="card" style="max-width:800px;margin:0 auto">
+      <table class="cmd">
+        <tr><td>inpiojus-university fiscalizar</td><td><span class="pt">Inicia a fiscalização (pede consentimento, URL e tempo).</span><span class="en">Starts proctoring (asks consent, URL and time).</span></td></tr>
+        <tr><td>... --url ... --minutos 60</td><td><span class="pt">Inicia já com os dados da prova.</span><span class="en">Starts with the exam data provided.</span></td></tr>
+        <tr><td>inpiojus-university analisar extrato.txt</td><td><span class="pt">Analisa o extrato e mostra o risco de fraude.</span><span class="en">Analyzes the extract and shows the fraud risk.</span></td></tr>
+        <tr><td>... analisar extrato.txt --json</td><td><span class="pt">Saída estruturada em JSON.</span><span class="en">Structured JSON output.</span></td></tr>
+        <tr><td>inpiojus-university demo-extrato</td><td><span class="pt">Gera um extrato de teste (limpo/suspeito/grave).</span><span class="en">Generates a test extract (clean/suspicious/severe).</span></td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="instalar">
+  <div class="container">
+    <h2 class="tsec"><span class="pt">Instale no <span class="teal">PowerShell</span></span><span class="en">Install with <span class="teal">PowerShell</span></span></h2>
+    <p class="dsec"><span class="pt">Uma linha. Requer Python 3.9+. O instalador cuida das dependências.</span><span class="en">One line. Requires Python 3.9+. The installer handles dependencies.</span></p>
+    <div style="text-align:center">
+      <div class="instalar" style="margin-bottom:26px"><span class="ps">PS&gt;</span><span>irm https://elevbit-ai.github.io/inpiojus-analitic-university/install.ps1 | iex</span><button class="btn-copiar" onclick="copiar()"><span class="pt">Copiar</span><span class="en">Copy</span></button></div>
+    </div>
+    <div class="grade" style="max-width:900px;margin:0 auto">
+      <div class="card"><span class="ic">1️⃣</span><h3><span class="pt">Instale</span><span class="en">Install</span></h3><p><span class="pt">Cole o comando no PowerShell. Ele instala tudo e cria o comando <code>inpiojus-university</code>.</span><span class="en">Paste the command in PowerShell. It installs everything and creates <code>inpiojus-university</code>.</span></p></div>
+      <div class="card"><span class="ic">2️⃣</span><h3><span class="pt">Aluno fiscaliza</span><span class="en">Student proctors</span></h3><p><span class="pt"><code>inpiojus-university fiscalizar</code> — consente, informa a URL e faz a prova.</span><span class="en"><code>inpiojus-university fiscalizar</code> — consent, enter URL, take the exam.</span></p></div>
+      <div class="card"><span class="ic">3️⃣</span><h3><span class="pt">Instituição analisa</span><span class="en">Institution analyzes</span></h3><p><span class="pt"><code>inpiojus-university analisar extrato.txt</code> — risco e evidências.</span><span class="en"><code>inpiojus-university analisar extract.txt</code> — risk and evidence.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="autor" class="alt">
+  <div class="container">
+    <h2 class="tsec"><span class="pt">Autoria e <span class="teal">registro</span></span><span class="en">Authorship & <span class="teal">registration</span></span></h2>
+    <div class="autor-card">
+      <div class="av">🎓</div>
+      <h3>Joaquim Pedro de Morais Filho</h3>
+      <div class="fn"><span class="pt">Autor e titular do InpioJus Analitic University</span><span class="en">Author and holder of InpioJus Analitic University</span></div>
+      <div class="ct">
+        📧 <a href="mailto:j360074@hotmail.com">j360074@hotmail.com</a><br>
+        📱 +55 85 99125-3990<br>
+        🔗 <a href="https://github.com/elevbit-ai/inpiojus-analitic-university" target="_blank" rel="noopener">github.com/elevbit-ai/inpiojus-analitic-university</a>
+      </div>
+    </div>
+    <div class="aviso"><span class="pt">⚠️ Ferramenta de apoio à integridade acadêmica. O resultado é um indicador de risco para revisão humana, com contraditório do aluno — não é prova nem decisão automática.</span><span class="en">⚠️ Academic-integrity support tool. The result is a risk indicator for human review, with the student's right to respond — not proof nor an automatic decision.</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p><strong>InpioJus Analitic University</strong> · © 2026 Joaquim Pedro de Morais Filho · MIT</p>
+    <p>j360074@hotmail.com · +55 85 99125-3990</p>
+  </div>
+</footer>
+
+<script>
+function toggleLang(){
+  const b=document.body;
+  const pt=b.classList.contains('lang-pt');
+  b.classList.toggle('lang-pt',!pt);b.classList.toggle('lang-en',pt);
+  document.documentElement.lang=pt?'en':'pt-BR';
+  try{localStorage.setItem('iju-lang',pt?'en':'pt')}catch(e){}
+}
+try{if(localStorage.getItem('iju-lang')==='en'){document.body.classList.remove('lang-pt');document.body.classList.add('lang-en');document.documentElement.lang='en'}}catch(e){}
+function copiar(){navigator.clipboard.writeText("irm https://elevbit-ai.github.io/inpiojus-analitic-university/install.ps1 | iex");document.querySelectorAll(".btn-copiar span."+(document.body.classList.contains('lang-pt')?'pt':'en')).forEach(s=>s.dataset.o=s.textContent);document.querySelectorAll(".btn-copiar").forEach(b=>b.querySelectorAll('span').forEach(s=>s.textContent="✓"));setTimeout(()=>location.reload&&document.querySelectorAll(".btn-copiar span").forEach(s=>{s.textContent=s.classList.contains('pt')?'Copiar':'Copy'}),1500)}
+
+const lang=()=>document.body.classList.contains('lang-pt')?'pt':'en';
+
+const EX={
+alto:{pt:`<span class="green">PS&gt; inpiojus-university analisar extrato_exemplo.txt</span>
+
+  <span class="teal">RISCO DE FRAUDE:</span> <span class="red">▂▅█  ALTO   (Pontuação: 120)</span>
+  Integridade do extrato: OK (hash confere).
+
+  <span class="teal">INDÍCIOS ENCONTRADOS</span>
+  ▸ [+55] 2 colagem(ns) (Ctrl+V), somando 310 caracteres —
+          indício de resposta trazida de fora (ex.: IA).
+        · 05:27 — colagem de 214 caracteres (Ctrl+V)
+  ▸ [+25] Padrão de cola detectado 1x: o aluno afastou-se
+          da prova e, logo em seguida, COLOU uma resposta —
+          sequência típica de consulta a IA/terceiros.
+        · 05:05 alt_tab -> 05:27 paste (214 chars)
+
+  <span class="teal">CONCLUSÃO</span>
+  Alto risco: encaminhe para revisão formal, com
+  contraditório do aluno.`,
+en:`<span class="green">PS&gt; inpiojus-university --lang en analisar exam_extract.txt</span>
+
+  <span class="teal">FRAUD RISK:</span> <span class="red">▂▅█  HIGH   (Score: 120)</span>
+  Extract integrity: OK (hash matches).
+
+  <span class="teal">FINDINGS</span>
+  ▸ [+55] 2 paste(s) (Ctrl+V), totaling 310 characters —
+          a sign of answers brought from outside (e.g. AI).
+        · 05:27 — paste of 214 characters (Ctrl+V)
+  ▸ [+25] Cheating pattern detected 1x: the student moved
+          away from the exam and, right after, PASTED an
+          answer — typical of consulting AI/third parties.
+        · 05:05 alt_tab -> 05:27 paste (214 chars)
+
+  <span class="teal">CONCLUSION</span>
+  High risk: refer for formal review, granting the
+  student the right to respond.`},
+baixo:{pt:`<span class="green">PS&gt; inpiojus-university analisar extrato_exemplo_limpo.txt</span>
+
+  <span class="teal">RISCO DE FRAUDE:</span> <span class="green">▂▁▁  BAIXO   (Pontuação: 5)</span>
+  Integridade do extrato: OK (hash confere).
+
+  <span class="teal">INDÍCIOS ENCONTRADOS</span>
+  Nenhum indício relevante de fraude foi encontrado.
+
+  <span class="teal">CONCLUSÃO</span>
+  Baixo risco: os sinais coletados não indicam fraude
+  relevante. Recomenda-se apenas o arquivamento.`,
+en:`<span class="green">PS&gt; inpiojus-university --lang en analisar clean_extract.txt</span>
+
+  <span class="teal">FRAUD RISK:</span> <span class="green">▂▁▁  LOW   (Score: 5)</span>
+  Extract integrity: OK (hash matches).
+
+  <span class="teal">FINDINGS</span>
+  No relevant signs of fraud were found.
+
+  <span class="teal">CONCLUSION</span>
+  Low risk: the collected signals do not indicate
+  relevant fraud. Archiving is recommended.`},
+extrato:{pt:`<span class="amber">[SESSAO / SESSION]</span>
+aluno / student: ALUNO DE EXEMPLO
+matricula / id: 2026-000123
+url_prova / exam_url: https://ava.universidade.edu.br/prova/8842
+
+<span class="amber">[METRICAS / METRICS]</span>
+keystrokes: 640          paste_events: 2
+camera_active: true      camera_face_ok: 268/300
+
+<span class="amber">[EVENTOS / EVENTS]</span>
+# t_seg | relogio | severidade | tipo | detalhe
+298.0 | 20:04:58 | high | focus_lost | -> chrome.exe :: ChatGPT
+327.0 | 20:05:27 | high | paste | colagem de 214 caracteres
+
+<span class="amber">[INTEGRIDADE / INTEGRITY]</span>
+hash_sha256: 8adf9799...a128d`,
+en:`<span class="amber">[SESSAO / SESSION]</span>
+aluno / student: SAMPLE STUDENT
+matricula / id: 2026-000123
+url_prova / exam_url: https://ava.university.edu/exam/8842
+
+<span class="amber">[METRICAS / METRICS]</span>
+keystrokes: 640          paste_events: 2
+camera_active: true      camera_face_ok: 268/300
+
+<span class="amber">[EVENTOS / EVENTS]</span>
+# t_sec | clock | severity | type | detail
+298.0 | 20:04:58 | high | focus_lost | -> chrome.exe :: ChatGPT
+327.0 | 20:05:27 | high | paste | paste of 214 characters
+
+<span class="amber">[INTEGRIDADE / INTEGRITY]</span>
+hash_sha256: 8adf9799...a128d`}};
+let exAtual='alto';
+function showEx(k,btn){exAtual=k;document.getElementById('exbox').innerHTML=EX[k][lang()];document.querySelectorAll('.aba').forEach(a=>a.classList.remove('on'));if(btn)btn.classList.add('on')}
+
+const V={
+v1:[["leg",{pt:"O aluno abre o PowerShell e aciona o agente para a prova.",en:"The student opens PowerShell and starts the agent for the exam."}],
+["cmd","inpiojus-university fiscalizar --url https://ava.faculdade.edu/prova/8842 --minutos 60",{pt:"Informa a URL da prova e a duração — passo obrigatório.",en:"Provides the exam URL and duration — a required step."}],
+["out",{pt:"  TERMO DE CONSENTIMENTO E AVISO DE PRIVACIDADE\n  • Camera: registra APENAS o seu rosto\n  • Teclado: metadados (nao senhas)\n  • Mouse e janela da prova\n  Digite ACEITO para consentir:",en:"  CONSENT FORM AND PRIVACY NOTICE\n  • Camera: records ONLY your face\n  • Keyboard: metadata (no passwords)\n  • Mouse and exam window\n  Type ACCEPT to consent:"},{pt:"Nada começa sem consentimento explícito e informado.",en:"Nothing starts without explicit, informed consent."}],
+["cmd","ACEITO",{pt:"O aluno consente. A câmera filma só o rosto.",en:"The student consents. The camera films only the face."}],
+["out",{pt:"  Fiscalizacao iniciada. Mantenha apenas a aba da prova aberta.\n  ● GRAVANDO — prova sob fiscalizacao\n  Tempo restante: 00:59:58",en:"  Monitoring started. Keep only the exam tab open.\n  ● RECORDING — exam under monitoring\n  Time left: 00:59:58"},{pt:"Um indicador de GRAVANDO fica sempre visível — total transparência.",en:"A RECORDING indicator stays visible — full transparency."}],
+["out",{pt:"  Prova encerrada. Gerando extrato...\n  Extrato salvo em: ~/.inpiojus_university/sessions/.../extrato.txt\n  Envie este arquivo à sua instituição.",en:"  Exam finished. Generating extract...\n  Extract saved to: ~/.inpiojus_university/sessions/.../extract.txt\n  Send this file to your institution."},{pt:"Ao fim, gera o extrato assinado que o aluno envia à faculdade.",en:"At the end, it produces the signed extract the student sends in."}]],
+v2:[["leg",{pt:"Na faculdade, o agente University lê o extrato recebido.",en:"At the university, the University agent reads the received extract."}],
+["cmd","inpiojus-university analisar extrato_do_aluno.txt",{pt:"Um comando lê o extrato e verifica o hash de integridade.",en:"One command reads the extract and checks the integrity hash."}],
+["out",{pt:"  Integridade do extrato: OK (hash confere).\n  RISCO DE FRAUDE: ▂▅█  ALTO   (Pontuacao: 120)",en:"  Extract integrity: OK (hash matches).\n  FRAUD RISK: ▂▅█  HIGH   (Score: 120)"},{pt:"Primeiro confirma que o extrato não foi adulterado.",en:"First it confirms the extract was not tampered with."}],
+["out",{pt:"  INDICIOS ENCONTRADOS\n  ▸ [+55] 2 colagens (Ctrl+V), 310 caracteres — resposta de fora (IA)\n  ▸ [+25] Padrao: saiu da prova -> COLOU resposta (05:05 -> 05:27)",en:"  FINDINGS\n  ▸ [+55] 2 pastes (Ctrl+V), 310 chars — answer from outside (AI)\n  ▸ [+25] Pattern: left exam -> PASTED answer (05:05 -> 05:27)"},{pt:"Detecta o padrão de consultar a IA e colar — com horário exato.",en:"It detects the ask-AI-and-paste pattern — with exact timestamps."}],
+["out",{pt:"  CONCLUSAO\n  Alto risco: encaminhe para revisao formal, com\n  contraditorio do aluno. NAO e decisao automatica.",en:"  CONCLUSION\n  High risk: refer for formal review, granting the\n  student the right to respond. NOT an automatic decision."},{pt:"Entrega um indicador para a decisão humana — justa e auditável.",en:"It hands a risk indicator to the human decision — fair and auditable."}]]};
+
+class Player{
+  constructor(r,rot){this.r=r;this.rot=rot;this.tela=r.querySelector('.tela');this.leg=r.querySelector('.leg');this.bar=r.querySelector('.bar');this.bp=r.querySelector('.bplay');this.br=r.querySelector('.brei');this.on=false;this.i=0;this.cancel=false;this.done=false;this.exec=false;this.bp.onclick=()=>this.tog();this.br.onclick=()=>this.reset();this.reset()}
+  w(ms){return new Promise(res=>{const t0=performance.now();const tk=()=>{if(this.cancel)return res();if(!this.on){requestAnimationFrame(tk);return}if(performance.now()-t0>=ms)res();else requestAnimationFrame(tk)};tk()})}
+  txt(o){return typeof o==='string'?o:o[lang()]}
+  async type(s){const p=document.createElement('span');p.style.color='#5b8cff';p.textContent='PS> ';const c=document.createElement('span');c.style.color='#5ce39b';this.tela.appendChild(p);this.tela.appendChild(c);const cur=document.createElement('span');cur.className='cursor';this.tela.appendChild(cur);for(const ch of s){if(this.cancel)break;c.textContent+=ch;this.tela.scrollTop=this.tela.scrollHeight;await this.w(20+Math.random()*36)}cur.remove();this.tela.appendChild(document.createTextNode('\n'))}
+  async out(s){for(const l of s.split('\n')){if(this.cancel)break;const sp=document.createElement('span');sp.style.color=/●|RISCO|RISK|CONCLU|INDIC|FIND/.test(l)?'#2dd4bf':'#c7d0ea';sp.textContent=l+'\n';this.tela.appendChild(sp);this.tela.scrollTop=this.tela.scrollHeight;await this.w(85)}}
+  async run(){for(;this.i<this.rot.length;){if(this.cancel)return;const[tp,a,b]=this.rot[this.i];const cap=b||a;if(cap&&(cap.pt||cap.en))this.leg.textContent='🎙️ '+this.txt(cap);if(tp==='cmd'){await this.w(450);await this.type(this.txt(a));await this.w(300)}else if(tp==='out'){await this.out(this.txt(a));await this.w(1200)}else{await this.w(1800)}this.i++;this.bar.style.width=(this.i/this.rot.length*100)+'%'}if(!this.cancel){this.on=false;this.bp.textContent='▶';this.leg.textContent=lang()==='pt'?'✅ Fim. Aperte ⟲ para rever.':'✅ End. Press ⟲ to replay.';this.i=0;this.done=true}}
+  tog(){if(this.done){this.reset();return}this.on=!this.on;this.bp.textContent=this.on?'❚❚':'▶';if(this.on&&!this.exec){this.exec=true;this.run().then(()=>this.exec=false)}}
+  async reset(){this.cancel=true;this.on=false;await new Promise(r=>setTimeout(r,60));this.cancel=false;this.done=false;this.i=0;this.exec=false;this.tela.innerHTML='';this.bar.style.width='0';this.leg.textContent=lang()==='pt'?'▶ Aperte o play para começar.':'▶ Press play to start.';this.bp.textContent='▶ Play'}
+}
+document.querySelectorAll('.player').forEach(p=>new Player(p,V[p.dataset.video]));
+showEx('alto',null);
+</script>
+</body>
+</html>

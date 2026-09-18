@@ -1,0 +1,49 @@
+==================================================================
+ INPIOJUS ANALITIC UNIVERSITY
+ EXTRATO DE FISCALIZAÇÃO DE PROVA / EXAM PROCTORING EXTRACT
+ InpioJus Analitic University v1.0.0 — por Joaquim Pedro de Morais Filho
+==================================================================
+
+[SESSAO / SESSION]
+session_id: 20260918_170627
+aluno / student: ALUNO DE EXEMPLO / SAMPLE STUDENT
+matricula / id: 2026-000123
+url_prova / exam_url: https://ava.universidade.edu.br/prova/8842
+inicio / start: 2026-09-18 17:06:27
+fim / end: 2026-09-18 17:06:27
+duracao_prevista_min / planned_minutes: 60
+janela_prova / exam_window: chrome.exe :: Prova de Direito Constitucional - AVA
+
+[MAQUINA / MACHINE]
+sistema / system: Windows 10
+maquina / host: PC-ALUNO
+python: 3.11
+
+[CONSENTIMENTO / CONSENT]
+consentido / consented: SIM / YES
+registrado_em / recorded_at: 2026-09-18 17:06:27
+termos_versao / terms_version: 1.0
+
+[METRICAS / METRICS]
+keystrokes: 640
+paste_events: 2
+mouse_distance_px: 18300
+mouse_moves: 900
+camera_active: true
+camera_checks: 300
+camera_face_ok: 268
+total_eventos / total_events: 6
+
+[EVENTOS / EVENTS]
+# t_seg | relogio | severidade | tipo | detalhe | dados_json
+305.0 | 20:05:05 | high | alt_tab | Alt+Tab (troca de janela) | {}
+298.0 | 20:04:58 | high | focus_lost | focus -> chrome.exe :: ChatGPT | {"process":"chrome.exe","title":"ChatGPT"}
+320.0 | 20:05:20 | info | focus_regained | focus returned to exam window | {}
+327.0 | 20:05:27 | high | paste | colagem de 214 caracteres (Ctrl+V) | {"clipboard_len":214}
+1180.0 | 20:19:40 | medium | mouse_idle | mouse still for 140s | {"idle_seconds":140}
+1240.0 | 20:20:40 | medium | paste | colagem de 96 caracteres (Ctrl+V) | {"clipboard_len":96}
+
+[INTEGRIDADE / INTEGRITY]
+# O hash cobre todo o conteudo acima. Qualquer alteracao o invalida.
+# The hash covers everything above. Any change invalidates it.
+hash_sha256: b196e4286a196e4f79888d41c408b4fe2e0bac1c9f70b8c81f7fa87e5f3101d8
