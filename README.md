@@ -11,7 +11,9 @@ Consent-based · Transparent · 100% local · Bilingual (PT/EN)
 por / by **Joaquim Pedro de Morais Filho**
 
 [Site](https://elevbit-ai.github.io/inpiojus-analitic-university/) ·
-[🎬 Vídeo / Video](https://github.com/elevbit-ai/inpiojus-analitic-university/releases/download/v1.0.0/InpioJus-Analitic-University-Apresentacao.mp4) ·
+[🎬 Vídeo explicativo (PT)](https://github.com/elevbit-ai/inpiojus-analitic-university/releases/download/v1.0.0/InpioJus-University-PT.mp4) ·
+[🎬 Explainer video (EN)](https://github.com/elevbit-ai/inpiojus-analitic-university/releases/download/v1.0.0/InpioJus-University-EN.mp4) ·
+[Apresentação / Presentation](https://github.com/elevbit-ai/inpiojus-analitic-university/releases/download/v1.0.0/InpioJus-Analitic-University-Apresentacao.mp4) ·
 [Instalação / Install](#-instalação--installation) ·
 [Como funciona / How it works](#-como-funciona--how-it-works) ·
 [Privacidade / Privacy](PRIVACY.md)
